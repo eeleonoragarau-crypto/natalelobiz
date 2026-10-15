@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bad Ideas Only — Invito</title>
+<meta name="description" content="Lobiz Agency ti invita alla cena di Natale. Martedì 24 novembre, dalle 19:00, Showroom Guffanti, Milano.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,800;0,6..96,900;1,6..96,500&family=Archivo:wght@400;500;700;800&family=Permanent+Marker&family=Quicksand:wght@400;500&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000;
+  --paper:#f4ede0;
+  --paper-text:#141210;
+  --muted:#6a6157;
+  --red:#c8102e;
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --marker:"Permanent Marker","Marker Felt",cursive;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark}}
+:root[data-theme="dark"]{color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);font-family:var(--body);color:var(--paper-text);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body.locked{overflow:hidden}
+.k{fill:none;stroke:currentColor;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.r{fill:#c8102e}.w{fill:#f2ebdd}
+:focus-visible{outline:3px solid var(--red);outline-offset:4px}
+.paper-tex{position:absolute;inset:0;opacity:.5;mix-blend-mode:multiply;pointer-events:none;border-radius:inherit;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='.014' numOctaves='4' seed='3'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='2.5'><feDistantLight azimuth='45' elevation='60'/></feDiffuseLighting></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>")}
+
+/* ============ INTRO ============ */
+.intro{position:fixed;inset:0;z-index:50;background:#000;display:grid;place-items:center;overflow:hidden;cursor:pointer}
+.intro.gone{display:none}
+.counter{position:absolute;left:50%;top:clamp(24px,7vh,64px);transform:translateX(-50%);text-align:center;color:#f4ede0;font-family:var(--body);width:max-content;max-width:92vw}
+.counter small{display:block;font-size:13px;color:rgba(244,237,224,.55);letter-spacing:.04em}
+.counter b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(48px,9vw,88px);line-height:1;font-variant-numeric:tabular-nums;margin-top:4px}
+.counter b.ok{color:var(--red)}
+.idea{position:absolute;left:50%;top:50%;width:min(460px,84vw);aspect-ratio:4/3;margin-left:calc(min(460px,84vw)/-2);margin-top:calc(min(460px,84vw)*-.375);
+  background:var(--paper);padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 30px 60px -20px rgba(0,0,0,.9);will-change:transform}
+.idea .lab{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;position:relative;z-index:1}
+.idea .txt{font-family:var(--marker);font-size:clamp(34px,8.6vw,50px);line-height:1.08;text-align:center;margin:auto 0;color:#141210;position:relative;z-index:1}
+.idea .st{position:absolute;left:50%;top:76%;z-index:2;border:5px solid var(--red);color:var(--red);font-weight:800;font-size:clamp(34px,8vw,48px);letter-spacing:.06em;padding:2px 16px;border-radius:6px;opacity:0;mix-blend-mode:multiply;white-space:nowrap;transform:translate(-50%,-50%) rotate(-14deg)}
+.idea .st.green{border-color:#141210;color:#141210}
+.verdict{position:absolute;left:50%;bottom:clamp(30px,10vh,90px);transform:translateX(-50%);width:min(560px,90vw);text-align:center;color:#f4ede0;font-family:var(--display);font-style:italic;font-size:clamp(22px,4.4vw,34px);line-height:1.2;opacity:0}
+.skip{position:absolute;right:18px;bottom:18px;background:transparent;border:1px solid rgba(244,237,224,.4);color:rgba(244,237,224,.8);font:500 14px var(--body);padding:10px 16px;cursor:pointer}
+.skip:hover{border-color:#f4ede0;color:#fff}
+.flash{position:fixed;inset:0;z-index:60;background:var(--paper);opacity:0;pointer-events:none}
+
+/* ============ STAGE ============ */
+.stage{position:relative;min-height:100svh;display:grid;place-items:center;padding:clamp(40px,7vw,80px) 16px clamp(28px,5vw,60px);isolation:isolate;overflow:hidden}
+.bg{position:fixed;inset:-4%;z-index:-3;background:url(assets/hero.jpg) center 60%/cover no-repeat;filter:blur(1px) brightness(.8);will-change:transform}
+.vignette{position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at center,rgba(0,0,0,.05) 0%,rgba(0,0,0,.55) 90%);pointer-events:none}
+.spot{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(600px circle at var(--mx,50%) var(--my,40%),rgba(255,220,180,.16),transparent 60%);mix-blend-mode:screen}
+#fx{position:fixed;inset:0;z-index:40;pointer-events:none}
+
+.tilt{perspective:1200px;width:min(560px,100%)}
+.card3d{transform-style:preserve-3d;will-change:transform;position:relative}
+.card{position:relative;background:var(--paper);padding:clamp(34px,6vw,58px) clamp(26px,5.5vw,56px) clamp(36px,6vw,54px);text-align:center;transform:rotate(-1.2deg);box-shadow:0 50px 90px -30px rgba(0,0,0,.95),0 2px 0 rgba(255,255,255,.4) inset}
+.card::before{content:"";position:absolute;inset:12px;border:1px solid rgba(20,18,16,.35);pointer-events:none}
+.sheen{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:radial-gradient(500px circle at var(--sx,30%) var(--sy,20%),rgba(255,255,255,.75),transparent 55%);opacity:.9;z-index:3}
+
+.from{font-size:15px;color:var(--muted);margin:0;position:relative;z-index:1}
+.from b{color:var(--paper-text);font-weight:700}
+.title{font-family:var(--display);font-weight:900;font-size:clamp(64px,15vw,104px);line-height:.86;letter-spacing:-.02em;margin:18px 0 0;position:relative;z-index:1}
+.title span.row{display:block}
+.title .ch{display:inline-block;will-change:transform}
+.under{display:block;width:72%;height:16px;margin:4px auto 0;position:relative;z-index:1}
+.under path{stroke:var(--red);stroke-width:5;fill:none;stroke-linecap:round;stroke-dasharray:500;stroke-dashoffset:500}
+.line{font-size:16px;line-height:1.5;max-width:30ch;margin:10px auto 0;color:var(--muted);position:relative;z-index:1}
+.when{margin:30px 0 0;padding:22px 0;border-top:1.5px solid var(--paper-text);border-bottom:1.5px solid var(--paper-text);position:relative;z-index:1}
+.date{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,42px);line-height:1.05;margin:0}
+.time{font-family:var(--display);font-size:clamp(20px,3.6vw,24px);margin:6px 0 0}
+.where{margin:16px 0 0;font-size:16px;line-height:1.45}
+.where b{display:block;font-family:var(--display);font-size:22px;font-weight:800}
+.where a{color:var(--muted);text-underline-offset:3px}
+.dress{margin:24px 0 0;font-size:15px;color:var(--muted);position:relative;z-index:1}
+.dress b{display:block;color:var(--paper-text);font-family:var(--display);font-size:20px;font-weight:500;margin-top:2px}
+.dress i{display:block;font-style:normal;font-family:var(--marker);color:var(--red);font-size:20px;transform:rotate(-2deg);margin-top:4px}
+.cta{display:inline-block;margin-top:30px;background:var(--red);color:#fff;text-decoration:none;font-weight:700;font-size:18px;padding:18px 34px;border:2px solid var(--red);transition:background .15s,color .15s;position:relative;z-index:4;will-change:transform}
+.cta:hover{background:#141210;border-color:#141210}
+.rsvp-note{display:block;margin-top:12px;font-size:14px;color:var(--muted);position:relative;z-index:1}
+.stamp{position:absolute;right:-18px;top:-14px;z-index:5;border:4px solid var(--red);color:var(--red);font-weight:800;font-size:15px;line-height:1.1;letter-spacing:.08em;padding:6px 10px;border-radius:4px;transform:rotate(14deg);mix-blend-mode:multiply;text-align:center;background:rgba(244,237,224,.3)}
+.stamp b{display:block;font-size:22px}
+.martini{position:absolute;left:-46px;bottom:70px;width:96px;color:var(--paper-text);transform:rotate(-12deg);z-index:5}
+.glove{position:absolute;right:-30px;bottom:-34px;width:62px;transform:rotate(24deg);z-index:5}
+.n1{position:absolute;left:26px;top:-30px;font-family:var(--marker);font-size:17px;color:#f4ede0;transform:rotate(-5deg);text-shadow:0 1px 8px rgba(0,0,0,.9);z-index:5}
+.foot{text-align:center;margin:34px auto 0;color:rgba(244,237,224,.85);font-family:var(--display);font-style:italic;font-size:18px;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.replay{display:block;margin:12px auto 0;background:none;border:0;color:rgba(244,237,224,.7);font:500 14px var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-shadow:0 1px 6px rgba(0,0,0,.9)}
+.replay:hover{color:#fff}
+.pre .reveal{opacity:0}
+
+/* neon sign */
+.stage{grid-template-rows:auto auto;align-content:center;gap:clamp(30px,4.5vh,44px)}
+.n1{display:none}
+.neon{position:relative;white-space:nowrap;text-align:center;z-index:0;pointer-events:none;color:#fff4f4;opacity:0;transform:rotate(-2deg);line-height:1;
+  --glow:0 0 2px #fff,0 0 8px #ff6a76,0 0 18px #ff2a3f,0 0 36px #e0102a,0 0 64px #c8102e}
+.neon.on{opacity:1}
+.neon .nc{font-family:"Quicksand",Arial,sans-serif;font-weight:500;font-size:clamp(15px,4vw,34px);letter-spacing:.12em;text-shadow:var(--glow);vertical-align:middle}
+.neon .ns{display:inline-block;font-family:"Sacramento","Brush Script MT",cursive;font-size:clamp(32px,8.4vw,74px);margin-left:.08em;transform:rotate(-4deg);text-shadow:var(--glow);vertical-align:middle}
+.neon::before{content:"";position:absolute;inset:-20px -30px;background:radial-gradient(ellipse at center,rgba(200,16,46,.32),transparent 70%);z-index:-1;filter:blur(10px)}
+.neon.buzz .ns{animation:buzz 7s infinite}
+@keyframes buzz{0%,92%,100%{opacity:1}93%{opacity:.35}94%{opacity:1}95.5%{opacity:.5}96.5%{opacity:1}}
+@media (max-width:620px){
+  .martini{left:-12px;bottom:118px;width:56px}
+  .glove{right:-8px;width:48px}
+  .stamp{right:-4px;top:-16px;font-size:12px}.stamp b{font-size:17px}
+  .n1{display:none}
+  .stage{padding-top:28px}
+}
+@media (prefers-reduced-motion: reduce){
+  .intro{display:none}
+  .under path{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body class="locked">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wob" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/>
+    </filter>
+    <symbol id="martini" viewBox="0 0 200 270">
+      <g filter="url(#wob)">
+        <path class="w" d="M34 58 L166 58 L100 138 Z" opacity=".55"/>
+        <path class="k" d="M14 36 L186 36 L100 140 Z"/>
+        <path class="k" d="M34 58 L166 58"/>
+        <path class="k" d="M100 140 L100 236"/>
+        <ellipse class="k" cx="100" cy="242" rx="48" ry="9"/>
+        <path class="k" d="M168 6 L82 120"/>
+        <ellipse class="k" cx="104" cy="92" rx="19" ry="14" transform="rotate(-37 104 92)" style="fill:#7d7a3c"/>
+        <circle class="r" cx="96" cy="99" r="7"/>
+        <path class="k" d="M150 28 l10 -6 M156 36 l12 -4" stroke-width="2.5"/>
+      </g>
+    </symbol>
+    <symbol id="olive" viewBox="0 0 80 110">
+      <g filter="url(#wob)">
+        <path class="k" d="M64 4 L26 96"/>
+        <ellipse class="k" cx="40" cy="62" rx="20" ry="15" transform="rotate(-62 40 62)" style="fill:#7d7a3c"/>
+        <circle class="r" cx="36" cy="70" r="7"/>
+      </g>
+    </symbol>
+    <symbol id="glove" viewBox="0 0 140 320">
+      <g filter="url(#wob)">
+        <path class="r" style="stroke:#000;stroke-width:3.2;stroke-linejoin:round" d="M50 312 L44 178 C38 160 24 140 16 120 C10 104 24 98 32 110 L46 134 L42 62 C41 48 58 46 59 60 L64 114 L66 36 C66 22 84 22 84 36 L84 112 L90 46 C91 34 107 35 106 48 L101 116 L108 70 C110 58 125 60 123 73 L114 146 C112 166 108 178 100 186 L106 312 Z"/>
+        <path class="k" d="M58 196 C70 200 84 200 96 194" stroke="#000" stroke-width="2.4"/>
+        <path class="k" d="M50 298 L106 298" stroke="#000" stroke-width="2.4"/>
+      </g>
+    </symbol>
+    <symbol id="bowtie" viewBox="0 0 160 90">
+      <g filter="url(#wob)">
+        <path class="r" style="stroke:#000;stroke-width:3.2;stroke-linejoin:round" d="M70 38 L10 8 L16 82 L70 54 Z"/>
+        <path class="r" style="stroke:#000;stroke-width:3.2;stroke-linejoin:round" d="M90 38 L152 12 L144 86 L90 54 Z"/>
+        <rect class="r" x="68" y="32" width="24" height="26" rx="4" style="stroke:#000;stroke-width:3.2"/>
+      </g>
+    </symbol>
+    <symbol id="sock" viewBox="0 0 110 200">
+      <g filter="url(#wob)">
+        <path class="w" style="stroke:#000;stroke-width:3.2;stroke-linejoin:round" d="M28 6 L76 6 L78 120 C104 132 108 168 82 182 C66 192 30 194 14 186 C2 178 6 162 22 156 L30 150 Z"/>
+        <path d="M28 30 L76 30 M28 54 L77 54 M29 78 L77 78" stroke="#c8102e" stroke-width="9"/>
+        <circle class="r" cx="55" cy="120" r="7"/><circle class="r" cx="40" cy="166" r="6"/><circle class="r" cx="70" cy="160" r="6"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="counter"><small id="cLabel">Idee scartate per la cena di Natale</small><b id="count">000</b></div>
+  <p class="verdict" id="verdict">Era la peggiore. Per questo l’abbiamo scelta.</p>
+  <button class="skip" id="skip" type="button">Salta</button>
+</div>
+<div class="flash" id="flash"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="bg" id="bg" role="img" aria-label="Ospiti eleganti sul red carpet all’ingresso dello showroom"></div>
+<div class="vignette"></div>
+<div class="spot" id="spot"></div>
+
+<main class="stage pre" id="stage">
+  <div class="neon" id="neon" role="img" aria-label="Insegna al neon: Bad ideas make good stories">
+    <span class="nc">BAD IDEAS MAKE</span> <span class="ns">Good Stories</span>
+  </div>
+  <div class="tilt">
+    <div class="card3d" id="card3d">
+      <article class="card" aria-labelledby="t">
+        <div class="paper-tex"></div>
+        <div class="sheen" id="sheen"></div>
+        <span class="n1 reveal" aria-hidden="true">sei stato scelto. pessima idea.</span>
+        <div class="stamp reveal" id="stamp" aria-hidden="true"><b>INVITO</b>APPROVATO</div>
+        <svg class="martini reveal" viewBox="0 0 200 270" aria-hidden="true"><use href="#martini"/></svg>
+
+        <p class="from reveal"><b>Lobiz Agency</b> ti invita alla cena di Natale</p>
+        <h1 class="title" id="t" aria-label="Bad Ideas Only"><span class="row">BAD</span><span class="row">IDEAS</span><span class="row">ONLY</span></h1>
+        <svg class="under" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path id="underPath" d="M4 10 C 80 2, 160 15, 230 7 S 290 6, 296 10"/></svg>
+        <p class="line reveal">Una sera in cui le idee peggiori sono le benvenute. Porta la tua.</p>
+
+        <div class="when reveal">
+          <p class="date">Martedì 24 novembre</p>
+          <p class="time">dalle ore 19:00</p>
+          <p class="where"><b>Showroom Guffanti</b><a href="https://maps.google.com/?q=Via+Filippo+Corridoni+37,+Milano" target="_blank" rel="noopener">Via Filippo Corridoni 37, Milano</a></p>
+        </div>
+
+        <p class="dress reveal">Dress code<b>Smart elegant</b><i>con un dettaglio sbagliato</i></p>
+
+        <a class="cta reveal" id="cta" href="https://forms.gle/dfQaThSKjx2zWKik6" target="_blank" rel="noopener">Conferma la tua presenza</a>
+        <span class="rsvp-note reveal">R.S.V.P. · meno di due minuti</span>
+
+        <svg class="glove reveal" viewBox="0 0 140 320" aria-hidden="true"><use href="#glove"/></svg>
+      </article>
+    </div>
+    <p class="foot reveal">Check in. Get rejected. Enjoy anyway.</p>
+    <button class="replay reveal" id="replay" type="button">Rivedi le idee scartate</button>
+  </div>
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(id){ return document.getElementById(id); };
+  var intro=$('intro'), stage=$('stage'), countEl=$('count'), verdict=$('verdict'), flash=$('flash');
+  var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+  var skipped = false, running = false;
+
+  /* split title into letters */
+  document.querySelectorAll('.title .row').forEach(function(row){
+    var t=row.textContent; row.textContent='';
+    for (var i=0;i<t.length;i++){ var s=document.createElement('span'); s.className='ch'; s.textContent=t[i]; row.appendChild(s); }
+  });
+
+  /* ---------- FX canvas: paper scraps + bursts ---------- */
+  var cv=$('fx'), ctx=cv.getContext('2d'), W=0, H=0, DPR=Math.min(2, window.devicePixelRatio||1);
+  function size(){ W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px'; ctx.setTransform(DPR,0,0,DPR,0,0); }
+  size(); addEventListener('resize', size);
+  var flakes=[], bursts=[];
+  function mkFlake(top){
+    var red=Math.random()<.22;
+    return {x:Math.random()*W, y: top ? -20 : Math.random()*H, s: red? 8+Math.random()*6 : 4+Math.random()*7,
+      vy:.25+Math.random()*.6, vx:(Math.random()-.5)*.3, r:Math.random()*6.28, vr:(Math.random()-.5)*.03,
+      sway:Math.random()*6.28, red:red, a:.35+Math.random()*.45};
+  }
+  function startSnow(){ if (flakes.length) return; var n=Math.round(Math.min(60, W/22)); for(var i=0;i<n;i++) flakes.push(mkFlake(false)); }
+  function burst(x,y,n){
+    for(var i=0;i<n;i++){ var a=Math.random()*6.28, v=4+Math.random()*9;
+      bursts.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-5,r:Math.random()*6.28,vr:(Math.random()-.5)*.4,s:6+Math.random()*9,red:Math.random()<.55,life:1}); }
+  }
+  function drawX(s){ ctx.lineWidth=Math.max(2,s/4); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(-s/2,-s/2); ctx.lineTo(s/2,s/2); ctx.moveTo(s/2,-s/2); ctx.lineTo(-s/2,s/2); ctx.stroke(); }
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    for (var i=0;i<flakes.length;i++){ var f=flakes[i];
+      f.y+=f.vy; f.sway+=.012; f.x+=f.vx+Math.sin(f.sway)*.35; f.r+=f.vr;
+      if (f.y>H+20){ flakes[i]=mkFlake(true); continue; }
+      ctx.save(); ctx.globalAlpha=f.a; ctx.translate(f.x,f.y); ctx.rotate(f.r);
+      if (f.red){ ctx.strokeStyle='#c8102e'; drawX(f.s); } else { ctx.fillStyle='#f4ede0'; ctx.fillRect(-f.s/2,-f.s*.35,f.s,f.s*.7); }
+      ctx.restore();
+    }
+    for (var j=bursts.length-1;j>=0;j--){ var b=bursts[j];
+      b.vy+=.32; b.vx*=.985; b.x+=b.vx; b.y+=b.vy; b.r+=b.vr; b.life-=.009;
+      if (b.life<=0||b.y>H+40){ bursts.splice(j,1); continue; }
+      ctx.save(); ctx.globalAlpha=Math.min(1,b.life*1.4); ctx.translate(b.x,b.y); ctx.rotate(b.r);
+      if (b.red){ ctx.strokeStyle='#c8102e'; drawX(b.s); } else { ctx.fillStyle='#f4ede0'; ctx.fillRect(-b.s/2,-b.s*.35,b.s,b.s*.7); }
+      ctx.restore();
+    }
+    requestAnimationFrame(loop);
+  }
+  if (!reduce) requestAnimationFrame(loop);
+
+  /* ---------- INTRO ---------- */
+  var IDEAS=[
+    ['061','Cena seduta di 3 ore'],
+    ['128','Maglione con la renna'],
+    ['190','Babbo Natale in Vespa'],
+    ['246','Discorso di 40 slide']
+  ];
+  var READ=[950,800,680,580];   /* tempo di lettura prima del timbro */
+  var papers=[];
+
+  function shake(el, k){
+    k=k||1;
+    el.animate([{transform:'translate(0,0)'},{transform:'translate('+(-7*k)+'px,'+(4*k)+'px)'},{transform:'translate('+(6*k)+'px,'+(-5*k)+'px)'},{transform:'translate('+(-3*k)+'px,'+(2*k)+'px)'},{transform:'translate(0,0)'}],{duration:220,easing:'ease-out'});
+  }
+  function setCount(n, ok){ countEl.textContent=String(n).padStart(3,'0'); countEl.classList.toggle('ok', !!ok);
+    countEl.animate([{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:200,easing:'ease-out'}); }
+  function makePaper(no, txt, stampTxt, cls){
+    var p=document.createElement('div'); p.className='idea';
+    p.innerHTML='<div class="paper-tex"></div><div class="lab"><span>Idea n. '+no+'</span><span>Cena di Natale</span></div><div class="txt"></div><div class="st '+(cls||'')+'"></div>';
+    p.querySelector('.txt').textContent=txt; p.querySelector('.st').textContent=stampTxt;
+    intro.appendChild(p); papers.push(p); return p;
+  }
+  function toss(p, d){
+    var side=Math.random()<.5?-1:1;
+    var a=p.animate([
+      {transform:p.dataset.t, borderRadius:'0%'},
+      {transform:p.dataset.t+' scale(.55) rotate('+(side*40)+'deg)', borderRadius:'22%', offset:.35},
+      {transform:'translate('+(side*18)+'vw,-6vh) scale(.16) rotate('+(side*300)+'deg)', borderRadius:'50%', offset:.6},
+      {transform:'translate('+(side*70)+'vw,70vh) scale(.12) rotate('+(side*560)+'deg)', borderRadius:'50%'}
+    ],{duration:d*1.1, easing:'cubic-bezier(.5,0,.75,0)', fill:'forwards'});
+    a.finished.then(function(){ p.remove(); }).catch(function(){});
+  }
+  async function enter(p, d){
+    var fromX=(Math.random()-.5)*120, rot=(Math.random()-.5)*14;
+    p.dataset.t='rotate('+rot.toFixed(1)+'deg)';
+    await p.animate([
+      {transform:'translate('+fromX+'vw,110vh) rotate('+(rot*4)+'deg)'},
+      {transform:p.dataset.t}
+    ],{duration:d*.55, easing:'cubic-bezier(.15,.9,.3,1.05)', fill:'forwards'}).finished;
+  }
+  async function slam(p, d){
+    var st=p.querySelector('.st');
+    await st.animate([
+      {opacity:0, transform:'translate(-50%,-50%) rotate(-14deg) scale(3.2)'},
+      {opacity:1, transform:'translate(-50%,-50%) rotate(-14deg) scale(.92)', offset:.8},
+      {opacity:.95, transform:'translate(-50%,-50%) rotate(-14deg) scale(1)'}
+    ],{duration:Math.max(150, d*.2), easing:'cubic-bezier(.5,0,.9,.4)', fill:'forwards'}).finished;
+    shake(intro, d>600?1.2:.8);
+  }
+
+  async function playIntro(){
+    running=true; skipped=false;
+    intro.classList.remove('gone'); intro.style.opacity=1; document.body.classList.add('locked');
+    verdict.style.opacity=0; $('cLabel').textContent='Idee scartate per la cena di Natale'; setCount(0);
+    stage.classList.add('pre');
+    await wait(500);
+    for (var i=0;i<IDEAS.length;i++){
+      if (skipped) return;
+      var p=makePaper(IDEAS[i][0], IDEAS[i][1], 'REJECTED');
+      await enter(p, 950); if (skipped) return;
+      await wait(READ[i]); if (skipped) return;
+      await slam(p, 900); setCount(+IDEAS[i][0]);
+      await wait(380); if (skipped) return;
+      toss(p, 650);
+      await wait(150);
+    }
+    if (skipped) return;
+    await wait(250);
+    var fin=makePaper('247','Invitare proprio te.','APPROVATA','green');
+    await enter(fin, 1300); if (skipped) return;
+    await wait(500);
+    fin.querySelector('.st').style.borderColor='#c8102e'; fin.querySelector('.st').style.color='#c8102e';
+    await slam(fin, 1400);
+    $('cLabel').textContent='Idee approvate'; setCount(1, true);
+    var r=fin.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 70);
+    verdict.animate([{opacity:0,transform:'translate(-50%,12px)'},{opacity:1,transform:'translate(-50%,0)'}],{duration:500,fill:'forwards',easing:'ease-out'});
+    await wait(1900); if (skipped) return;
+    finish(fin);
+  }
+
+  async function finish(fin){
+    if (!running) return; running=false;
+    flash.animate([{opacity:0},{opacity:1}],{duration:380,fill:'forwards',easing:'ease-in'});
+    if (fin) fin.animate([{transform:fin.dataset.t},{transform:'scale(7) rotate(0deg)'}],{duration:420,fill:'forwards',easing:'cubic-bezier(.6,0,.9,.5)'});
+    await wait(400);
+    papers.forEach(function(p){ p.remove(); }); papers=[];
+    intro.classList.add('gone'); document.body.classList.remove('locked');
+    reveal();
+    flash.animate([{opacity:1},{opacity:0}],{duration:600,fill:'forwards',easing:'ease-out'});
+  }
+
+  function skip(){ if (!running) return; skipped=true; finish(null); }
+  intro.addEventListener('click', skip);
+  $('skip').addEventListener('click', function(e){ e.stopPropagation(); skip(); });
+  addEventListener('keydown', function(e){ if (running && (e.key==='Escape'||e.key===' '||e.key==='Enter')){ e.preventDefault(); skip(); } });
+
+  /* ---------- CARD REVEAL ---------- */
+  var c3=$('card3d');
+  function neonOn(delay){
+    var n=$('neon'); n.classList.remove('on','buzz');
+    if (reduce){ n.classList.add('on'); return; }
+    setTimeout(function(){
+      n.animate([{opacity:0},{opacity:1,offset:.08},{opacity:.1,offset:.14},{opacity:.9,offset:.22},{opacity:.2,offset:.3},{opacity:1,offset:.42},{opacity:.6,offset:.5},{opacity:1}],{duration:1300,easing:'linear'})
+        .finished.then(function(){ n.classList.add('on','buzz'); }).catch(function(){ n.classList.add('on'); });
+    }, delay);
+  }
+  function reveal(){
+    neonOn(2600);
+    stage.classList.remove('pre');
+    startSnow();
+    $('bg').animate([{filter:'blur(8px) brightness(0)',transform:'scale(1.18)'},{filter:'blur(1px) brightness(.8)',transform:'scale(1.04)'}],{duration:1800,easing:'cubic-bezier(.2,.7,.2,1)',fill:'backwards'});
+    c3.animate([{transform:'translateY(40px) rotateX(55deg) rotateZ(-6deg) scale(.7)',opacity:0},{transform:'translateY(0) rotateX(0) rotateZ(0) scale(1)',opacity:1}],{duration:1000,easing:'cubic-bezier(.2,1.1,.3,1)'});
+    var chars=document.querySelectorAll('.title .ch');
+    chars.forEach(function(ch,i){
+      ch.animate([{transform:'translateY(-120%) rotate('+((i%2?1:-1)*(18+Math.random()*20))+'deg)',opacity:0},{transform:'translateY(6%) rotate(0)',opacity:1,offset:.75},{transform:'translateY(0)',opacity:1}],
+        {duration:620,delay:450+i*55,easing:'cubic-bezier(.3,1.4,.5,1)',fill:'backwards'});
+    });
+    var tEnd=450+chars.length*55+400;
+    $('underPath').animate([{strokeDashoffset:500},{strokeDashoffset:0}],{duration:700,delay:tEnd,easing:'cubic-bezier(.6,.1,.3,1)',fill:'forwards'});
+    document.querySelectorAll('.reveal').forEach(function(el,i){
+      if (el.id==='stamp') return;
+      el.animate([{opacity:0,transform:(getComputedStyle(el).transform==='none'?'':getComputedStyle(el).transform)+' translateY(14px)'},{opacity:1,transform:(getComputedStyle(el).transform==='none'?'none':getComputedStyle(el).transform)}],
+        {duration:600,delay:tEnd+200+i*90,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'});
+    });
+    var st=$('stamp');
+    st.animate([{opacity:0,transform:'rotate(14deg) scale(3.5)'},{opacity:1,transform:'rotate(14deg) scale(.9)',offset:.8},{opacity:1,transform:'rotate(14deg) scale(1)'}],
+      {duration:300,delay:tEnd+1300,easing:'cubic-bezier(.5,0,.9,.4)',fill:'backwards'})
+      .finished.then(function(){ shake(c3,.9); var r=st.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,26); }).catch(function(){});
+    document.querySelectorAll('.pre .reveal').forEach(function(){});
+  }
+
+  /* ---------- POINTER: tilt, sheen, parallax, spotlight, magnetic CTA ---------- */
+  var tx=0,ty=0,cx=0,cy=0, px=.5, py=.4;
+  function onMove(x,y){ px=x/innerWidth; py=y/innerHeight; tx=(px-.5)*2; ty=(py-.5)*2;
+    document.documentElement.style.setProperty('--mx',(px*100)+'%'); document.documentElement.style.setProperty('--my',(py*100)+'%'); }
+  addEventListener('pointermove', function(e){ if (e.pointerType!=='touch') onMove(e.clientX,e.clientY); });
+  var sheen=$('sheen'), bg=$('bg'), t0=performance.now();
+  function tick(now){
+    var idle=(now-t0)/1000;
+    var ix = tx + Math.sin(idle*.6)*.12, iy = ty + Math.cos(idle*.5)*.12;
+    cx+=(ix-cx)*.07; cy+=(iy-cy)*.07;
+    c3.style.transform='rotateY('+(cx*9).toFixed(2)+'deg) rotateX('+(-cy*7).toFixed(2)+'deg)';
+    sheen.style.setProperty('--sx',(50+cx*45)+'%'); sheen.style.setProperty('--sy',(40+cy*45)+'%');
+    bg.style.transform='scale(1.04) translate('+(-cx*12).toFixed(1)+'px,'+(-cy*10).toFixed(1)+'px)';
+    requestAnimationFrame(tick);
+  }
+  if (!reduce) requestAnimationFrame(tick);
+
+  var cta=$('cta');
+  cta.addEventListener('pointermove', function(e){ if (reduce) return; var r=cta.getBoundingClientRect();
+    var dx=(e.clientX-(r.left+r.width/2))*.18, dy=(e.clientY-(r.top+r.height/2))*.3; cta.style.transform='translate('+dx+'px,'+dy+'px)'; });
+  cta.addEventListener('pointerleave', function(){ cta.style.transform=''; });
+  cta.addEventListener('click', function(){ if (reduce) return; var r=cta.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, 90); });
+
+  $('replay').addEventListener('click', function(){ if (reduce) return; scrollTo(0,0); playIntro(); });
+
+  if (reduce){ $('neon').classList.add('on'); intro.classList.add('gone'); document.body.classList.remove('locked'); stage.classList.remove('pre'); }
+  else { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(playIntro); }
+})();
+</script>
+</body>
+</html>
